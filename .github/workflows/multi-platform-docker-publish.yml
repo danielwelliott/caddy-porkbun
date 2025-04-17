@@ -41,7 +41,7 @@ jobs:
         id: meta
         uses: docker/metadata-action@v5
         with:
-          images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
+          images: ${{ env.IMAGE_NAME }}
       
       # Login against a Docker registry except on PR
       # https://github.com/docker/login-action
@@ -61,7 +61,7 @@ jobs:
         uses: docker/build-push-action@471d1dc4e07e5cdedd4c2171150001c434f0b7a4 # v6.15.0
         with:
           platforms: ${{ matrix.platform }}
-          tags: usertest/reponame
+          tags: ghcr.io/danielwelliott/caddy-porkbun:cross-compile
           labels: ${{ steps.meta.outputs.labels }}
           outputs: type=image,push-by-digest=true,name-canonical=true,push=true
 
