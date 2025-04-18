@@ -1,5 +1,5 @@
 name: cross-compile build
-# from GitHub's suggusted Publish Docker Container and https://docs.docker.com/build/ci/github-actions/multi-platform/#build-and-load-multi-platform-images
+# Tweaked from https://docs.docker.com/build/ci/github-actions/multi-platform/#distribute-build-across-multiple-runners to work with ghcr.io
 on:
   push:
     branches: [ "main" ]
@@ -124,8 +124,6 @@ jobs:
       - name: Create manifest list and push
         working-directory: ${{ runner.temp }}/digests
         run: |
-          echo docker buildx imagetools create $(jq -cr '.tags | map("-t " + .) | join(" ")' <<< "$DOCKER_METADATA_OUTPUT_JSON") \
-            $(printf '${{ env.IMAGE_NAME }}@sha256:%s ' *)
           docker buildx imagetools create $(jq -cr '.tags | map("-t " + .) | join(" ")' <<< "$DOCKER_METADATA_OUTPUT_JSON") \
             $(printf '${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}@sha256:%s ' *)
 
