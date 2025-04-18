@@ -63,7 +63,7 @@ jobs:
           platforms: ${{ matrix.platform }}
           tags: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
           labels: ${{ steps.meta.outputs.labels }}
-          outputs: type=image,push-by-digest=true,name-canonical=true,push=true
+          outputs: type=image,push-by-digest=true,name-canonical=true,push=${{github.event_name != 'pull_request'}}
 
       - name: Export digest
         run: |
@@ -123,10 +123,16 @@ jobs:
 
       - name: Create manifest list and push
         working-directory: ${{ runner.temp }}/digests
+        env:
+          DRYRUN: ${{ github.event_name != 'pull_request' }}
         run: |
+          echo $DRYRUN
+          echo ${DRYRUN:+--dry-run}
+          echo ${{ github.event_name != 'pull_request' }}
           docker buildx imagetools create $(jq -cr '.tags | map("-t " + .) | join(" ")' <<< "$DOCKER_METADATA_OUTPUT_JSON") \
-            $(printf '${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}@sha256:%s ' *)
+            $(printf '${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}@sha256:%s ' *) ${DRYRUN:+--dry-run}
 
       - name: Inspect image
+        if: github.event_name != 'pull_request'
         run: |
           docker buildx imagetools inspect ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:${{ steps.meta.outputs.version }}
