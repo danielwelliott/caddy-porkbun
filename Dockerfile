@@ -1,6 +1,7 @@
-FROM docker.io/library/caddy:2.9.1-builder AS builder
+FROM --platform=$BUILDPLATFORM docker.io/library/caddy:2.9.1-builder AS builder
 
-RUN xcaddy build \
+ARG TARGETOS TARGETARCH
+RUN GOOS=${TARGETOS} GOARCH=${TARGETARCH} xcaddy build \
     --with github.com/caddy-dns/porkbun
 
 FROM docker.io/library/caddy:2.9.1
