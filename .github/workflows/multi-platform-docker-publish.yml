@@ -2,7 +2,7 @@ name: cross-compile build
 # from GitHub's suggusted Publish Docker Container and https://docs.docker.com/build/ci/github-actions/multi-platform/#build-and-load-multi-platform-images
 on:
   push:
-    branches: [ "main" ]
+    branches: [ "main", "cross-compile" ]
     # Publish semver tags as releases.
     tags: [ 'v*.*.*' ]
   pull_request:
