@@ -123,14 +123,13 @@ jobs:
 
       - name: Create manifest list and push
         working-directory: ${{ runner.temp }}/digests
-        env:
-          DRYRUN: ${{ github.event_name != 'pull_request' }}
+        if: github.event_name != 'pull_request'
         run: |
           echo $DRYRUN
           echo ${DRYRUN:+--dry-run}
           echo ${{ github.event_name != 'pull_request' }}
           docker buildx imagetools create $(jq -cr '.tags | map("-t " + .) | join(" ")' <<< "$DOCKER_METADATA_OUTPUT_JSON") \
-            $(printf '${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}@sha256:%s ' *) ${DRYRUN:+--dry-run}
+            $(printf '${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}@sha256:%s ' *)
 
       - name: Inspect image
         if: github.event_name != 'pull_request'
