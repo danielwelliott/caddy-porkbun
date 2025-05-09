@@ -1,9 +1,9 @@
-FROM --platform=$BUILDPLATFORM docker.io/library/caddy:2.9.1-builder@sha256:1609bfce85bd4452a875e4d459f25e602c484b5a36e9c015511b5bdbd3539784 AS builder
+FROM --platform=$BUILDPLATFORM docker.io/library/caddy:2.10.0-builder@sha256:c9fd63066cb907c05488886402ed9869ba8b90741a6af2d85b33ab43ba94f342 AS builder
 
 ARG TARGETOS TARGETARCH
 RUN GOOS=${TARGETOS} GOARCH=${TARGETARCH} xcaddy build \
-    --with github.com/caddy-dns/porkbun@v0.2.1
+    --with github.com/caddy-dns/porkbun@8b5ae445b46111a4487624cd833e3dc5142cbea5
 
-FROM docker.io/library/caddy:2.9.1@sha256:748016f285ed8c43a9ce6e3aed6d92d3009d90ca41157950880f40beaf3ff62b
+FROM docker.io/library/caddy:2.10.0@sha256:e759110e56bae353dbceddff9d7665feb5229d5afac1a5e7e3f42d99218f9ba6
 
 COPY --from=builder /usr/bin/caddy /usr/bin/caddy
