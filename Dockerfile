@@ -2,7 +2,7 @@ FROM --platform=$BUILDPLATFORM docker.io/library/caddy:2.10.0-builder@sha256:c9f
 
 ARG TARGETOS TARGETARCH
 RUN GOOS=${TARGETOS} GOARCH=${TARGETARCH} xcaddy build \
-    --with github.com/caddy-dns/porkbun@v0.3.0@sha256:8b5ae445b46111a4487624cd833e3dc5142cbea5
+    --with github.com/caddy-dns/porkbun@sha256:8b5ae445b46111a4487624cd833e3dc5142cbea5
 
 FROM docker.io/library/caddy:2.10.0@sha256:e759110e56bae353dbceddff9d7665feb5229d5afac1a5e7e3f42d99218f9ba6
 
