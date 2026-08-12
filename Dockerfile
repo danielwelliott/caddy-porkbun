@@ -1,4 +1,4 @@
-FROM --platform=$BUILDPLATFORM docker.io/library/caddy:2.11.4-builder@sha256:2cffe63dc72e3ea610f70a6bd4b11a4d1c873000e191f1bf59aae88d464906c5 AS builder
+FROM --platform=$BUILDPLATFORM docker.io/library/caddy:2.11.4-builder@sha256:2620ea2bb3ba2119a51dee02753f2e16e7f0a33dca5466e240e2d32f1df90a5b AS builder
 
 ARG TARGETOS TARGETARCH
 RUN GOOS=${TARGETOS} GOARCH=${TARGETARCH} xcaddy build \
